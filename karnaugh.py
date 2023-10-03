@@ -75,22 +75,9 @@ def gerar_mapa_agrupamento_4_bloco(linha_1, linha_2, tabela):
 
             gerar_imagem(tabela_local)
 
-def gerar_pontas(tabela):
-    tabela_local = tabela
-    
-    tabela_local[0][0] = 2
-    tabela_local[0][3] = 2
-    tabela_local[3][0] = 2
-    tabela_local[3][3] = 2
-
-    gerar_imagem(tabela_local)
-
 def iterando_linhas_e_colunas(tabela):
     linha_1 = linha_2 = linha_3 = linha_4 = False
     coluna_1 = coluna_2 = coluna_3 = coluna_4 = False
-
-    pontas_1 = pontas_2 = False
-    pontas_final = False
 
     tabela_transposta = list(zip(*tabela))
 
@@ -110,14 +97,6 @@ def iterando_linhas_e_colunas(tabela):
                 linha_3 = True
             else:
                 linha_4 = True
-        
-        if(index == 0):
-            if(linha[0] == 1 and linha[3] == 1):
-                pontas_1 = True
-
-        if(index == 3):
-            if(linha[0] == 1 and linha[3] == 1):
-                pontas_2 = True
     
     #verificando agrupamento de 8 das linhas
     linha_1_e_4 = True if linha_1 and linha_4 else False
@@ -197,29 +176,6 @@ def iterando_linhas_e_colunas(tabela):
         gerar_mapa_agrupamento_4_bloco(1, 2, tabela)
     if(not linha_3_e_4):
         gerar_mapa_agrupamento_4_bloco(2, 3, tabela)
-
-
-
-        #for i in range(4):
-        # if(tabela[0][0] == 1 and tabela[0][1] == 1 and tabela[3][0] == 1 and tabela[3][1] == 1):
-        #     x = 1
-        # if(tabela[0][1] == 1 and tabela[0][2] == 1 and tabela[3][1] == 1 and tabela[3][2] == 1):
-        #     x = 2
-        # if(tabela[0][2] == 1 and tabela[0][3] == 1 and tabela[3][2] == 1 and tabela[3][3] == 1):
-        #     x = 3
-        # if(tabela[0][3] == 1 and tabela[0][0] == 1 and tabela[3][3] == 1 and tabela[3][0] == 1):
-        #     x = 4
-            
-
-
-    #verificando pontas
-    # if(pontas_1 and pontas_2):
-    #     pontas_final = True
-
-    # #gerando agrupamento das pontas
-    # if(pontas_final):
-    #     gerar_pontas(tabela)
-
 
 def gerar_imagem(matriz):
     indexImagemFunc()
