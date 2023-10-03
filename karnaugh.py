@@ -46,11 +46,48 @@ def gerar_mapa_agrupamento_8(valor_1, valor_2, tabela, eh_linha):
 
     gerar_imagem(tabela_local)
             
+def gerar_mapa_agrupamento_4_linha(valor_1, tabela, eh_linha):
+    tabela_local = tabela
+    if(eh_linha):
+        for index, linha in enumerate(tabela):
+            if(index == valor_1):
+                tabela_local[index] = [2, 2, 2, 2]
+    else:
+        for index, coluna in enumerate(tabela):
+            if(index == valor_1):
+                tabela_local[index] = [2, 2, 2, 2]
+        tabela_local = [list(coluna) for coluna in zip(*tabela_local)]
+
+    gerar_imagem(tabela_local)
+
+def gerar_mapa_agrupamento_4_bloco(linha_1, linha_2, tabela):
+    for i in range(4):
+        x = tabela[linha_1][i]
+        z = tabela[linha_2][i]
+        y = tabela[linha_1][(i+1)%4]
+        w = tabela[linha_2][(i+1)%4]
+        if tabela[linha_1][i] == 1 and tabela[linha_2][i] == 1 and tabela[linha_1][(i+1)%4] == 1 and tabela[linha_2][(i+1)%4] == 1:
+            tabela_local = tabela
+            tabela_local[linha_1][i] = 2
+            tabela_local[linha_2][i] = 2
+            tabela_local[linha_1][(i+1)%4] = 2
+            tabela_local[linha_2][(i+1)%4] = 2
+
+            gerar_imagem(tabela_local)
+
+def gerar_pontas(tabela):
+    tabela_local = tabela
+    
+    tabela_local[0][0] = 2
+    tabela_local[0][3] = 2
+    tabela_local[3][0] = 2
+    tabela_local[3][3] = 2
+
+    gerar_imagem(tabela_local)
+
 def iterando_linhas_e_colunas(tabela):
     linha_1 = linha_2 = linha_3 = linha_4 = False
     coluna_1 = coluna_2 = coluna_3 = coluna_4 = False
-
-    coluna_1_e_4 = coluna_1_e_2 = coluna_2_e_3 = coluna_3_e_4 = False
 
     pontas_1 = pontas_2 = False
     pontas_final = False
@@ -131,9 +168,58 @@ def iterando_linhas_e_colunas(tabela):
     if(coluna_3_e_4):
         gerar_mapa_agrupamento_8(2, 3, tabela_transposta, False)
 
+    #gerando agrupamentos de 4 variaveis em linha/coluna
+    #linhas
+    if(linha_1):
+        gerar_mapa_agrupamento_4_linha(0, tabela, True)
+    if(linha_2):
+        gerar_mapa_agrupamento_4_linha(1, tabela, True)
+    if(linha_3):
+        gerar_mapa_agrupamento_4_linha(2, tabela, True)
+    if(linha_4):
+        gerar_mapa_agrupamento_4_linha(3, tabela, True)
+    #colunas
+    if(coluna_1):
+        gerar_mapa_agrupamento_4_linha(0, tabela_transposta, False)
+    if(coluna_2):
+        gerar_mapa_agrupamento_4_linha(1, tabela_transposta, False)
+    if(coluna_3):
+        gerar_mapa_agrupamento_4_linha(2, tabela_transposta, False)
+    if(coluna_4):
+        gerar_mapa_agrupamento_4_linha(3, tabela_transposta, False)
+
+    #gerando agrupamentos de 4 variaveis em bloco
+    if(not linha_1_e_4):
+        gerar_mapa_agrupamento_4_bloco(0, 3, tabela)
+    if(not linha_1_e_2):
+        gerar_mapa_agrupamento_4_bloco(0, 1, tabela)
+    if(not linha_2_e_3):
+        gerar_mapa_agrupamento_4_bloco(1, 2, tabela)
+    if(not linha_3_e_4):
+        gerar_mapa_agrupamento_4_bloco(2, 3, tabela)
+
+
+
+        #for i in range(4):
+        # if(tabela[0][0] == 1 and tabela[0][1] == 1 and tabela[3][0] == 1 and tabela[3][1] == 1):
+        #     x = 1
+        # if(tabela[0][1] == 1 and tabela[0][2] == 1 and tabela[3][1] == 1 and tabela[3][2] == 1):
+        #     x = 2
+        # if(tabela[0][2] == 1 and tabela[0][3] == 1 and tabela[3][2] == 1 and tabela[3][3] == 1):
+        #     x = 3
+        # if(tabela[0][3] == 1 and tabela[0][0] == 1 and tabela[3][3] == 1 and tabela[3][0] == 1):
+        #     x = 4
+            
+
+
     #verificando pontas
-    if(pontas_1 and pontas_2):
-        pontas_final = True
+    # if(pontas_1 and pontas_2):
+    #     pontas_final = True
+
+    # #gerando agrupamento das pontas
+    # if(pontas_final):
+    #     gerar_pontas(tabela)
+
 
 def gerar_imagem(matriz):
     indexImagemFunc()
@@ -154,15 +240,15 @@ def gerar_imagem(matriz):
 
     ax.axis('off')
 
-    plt.savefig(os.path.join('teste', f'imagem_{indexImagem}.png'))
+    plt.savefig(os.path.join('imagens', f'imagem_{indexImagem}.png'))
     plt.close()
 
 if __name__ == "__main__":
-    if not os.path.exists('teste'):
-        os.makedirs('teste')
+    if not os.path.exists('imagens'):
+        os.makedirs('imagens')
 
-    shutil.rmtree('teste', ignore_errors=True)
-    os.makedirs('teste')
+    shutil.rmtree('imagens', ignore_errors=True)
+    os.makedirs('imagens')
     
     tabela = obter_valores_tabela()
     mapa_karnaugh = gerar_mapa_karnaugh(tabela)
