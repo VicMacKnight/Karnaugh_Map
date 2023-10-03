@@ -149,7 +149,7 @@ def iterando_linhas_e_colunas(tabela):
 
     #gerando agrupamentos de 4 variaveis em linha/coluna
     #linhas
-    if(linha_1):
+    if(linha_1 and not (linha_1_e_2 or linha_1_e_4)):
         gerar_mapa_agrupamento_4_linha(0, tabela, True)
     if(linha_2):
         gerar_mapa_agrupamento_4_linha(1, tabela, True)
